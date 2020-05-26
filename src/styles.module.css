@@ -1,9 +1,29 @@
 /* add css module styles here (optional) */
 
-.test {
+.container {
   margin: 2em;
-  padding: 0.5em;
-  border: 2px solid #000;
-  font-size: 2em;
-  text-align: center;
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+
+.weekdays {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    margin: 0;
+    justify-content: space-around;
+}
+
+.day {
+    padding: 10px;
+    text-transform: capitalize;
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid black;
+}
+
+.day:last-child {
+    border-right: none;
 }
