@@ -12,12 +12,18 @@ interface Props {
   notes: Notes[]
 }
 
+interface ReducedNote {
+  time: Date
+  notes: Notes[]
+  numberOfColums: number
+}
+
 const week = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb']
 
 const today = new Date().getDay()
 
 export const ReactWeekNotes = ({ color, notes }: Props) => {
-  const [allNotes, setAllNotes] = useState<any>([])
+  const [allNotes, setAllNotes] = useState<ReducedNote[]>([])
 
   useEffect(() => {
     var reducedNotes = notes.reduce((allNotes: Array<any>, note: Notes) => {
@@ -75,26 +81,26 @@ export const ReactWeekNotes = ({ color, notes }: Props) => {
           </tr>
         </thead>
         <tbody>
-          {allNotes.map((item: any, index: number) => {
+          {allNotes.map((item: ReducedNote, index: number) => {
             return (
               <tr key={index}>
                 <td rowSpan={item.numberOfColums}>{`${item.time.getHours()}:${
                   (item.time.getMinutes() < 10 ? '0' : '') +
                   item.time.getMinutes()
                 }`}</td>
-                {week.map((_, noteIndex: number) => {
-                  var testNumber = item.notes.filter(
-                    (n: Notes) => n.day === noteIndex
+                {week.map((_, dayIndex: number) => {
+                  var numberOfNotesPerDay = item.notes.filter(
+                    (note: Notes) => note.day === dayIndex
                   )
 
-                  if (testNumber.length === 1) {
-                    return <td key={noteIndex}>{testNumber[0].name}</td>
-                  } else if (testNumber.length >= 2) {
+                  if (numberOfNotesPerDay.length === 1) {
+                    return <td key={dayIndex}>{numberOfNotesPerDay[0].name}</td>
+                  } else if (numberOfNotesPerDay.length >= 2) {
                     return (
-                      <td key={noteIndex}>
+                      <td key={dayIndex}>
                         <table>
                           <tbody>
-                            {testNumber.map((z: any, i: any) => (
+                            {numberOfNotesPerDay.map((z: any, i: any) => (
                               <tr key={i}>
                                 <td>{z.name}</td>
                               </tr>
@@ -104,7 +110,7 @@ export const ReactWeekNotes = ({ color, notes }: Props) => {
                       </td>
                     )
                   } else {
-                    return <td key={noteIndex}>{null}</td>
+                    return <td key={dayIndex}>{null}</td>
                   }
                 })}
               </tr>
