@@ -1,0 +1,17 @@
+/* add css module styles here (optional) */
+
+.container {
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabledata {
+    border: 1px solid #999;
+    padding: 0.5rem;
+    text-align: left;
+}

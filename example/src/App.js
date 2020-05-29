@@ -3,8 +3,16 @@ import React from 'react'
 import { ReactWeekNotes } from 'react-week-notes'
 import 'react-week-notes/dist/index.css'
 
+const notes = [
+    {name: 'Homework', time: new Date(), day: 1}, 
+]
+
 const App = () => {
-  return <ReactWeekNotes notes={[{name: 'ingles', time: new Date(), day: 0}, {name: 'portugues', time: new Date(), day: 1}, {name: 'matematica', time: new Date(), day: 3}, {name: 'matematica', time: new Date(), day: 3} ]} color="#6baade" />
+    return (
+        <div style={{ margin: '2em' }}>
+            <ReactWeekNotes notes={notes} color="#6baade" />
+        </div>
+    )
 }
 
 export default App

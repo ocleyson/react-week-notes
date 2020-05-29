@@ -1,45 +1,41 @@
 import React, { useEffect, useState } from 'react'
-import styles from './styles.module.css'
+import styles from './styles.css'
 
-interface Notes {
+interface INote {
   name: string
   time: Date
   day: number
 }
 
-interface Props {
+interface IProps {
   color?: string
-  notes: Notes[]
+  notes: INote[]
 }
 
-interface ReducedNote {
+interface IReducedNote {
   time: Date
-  notes: Notes[]
-  numberOfColums: number
+  notes: INote[]
 }
 
 const week = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb']
 
 const today = new Date().getDay()
 
-export const ReactWeekNotes = ({ color, notes }: Props) => {
-  const [allNotes, setAllNotes] = useState<ReducedNote[]>([])
+export const ReactWeekNotes = ({ color, notes }: IProps) => {
+  const [allNotes, setAllNotes] = useState<IReducedNote[]>([])
 
   useEffect(() => {
-    var reducedNotes = notes.reduce((allNotes: Array<any>, note: Notes) => {
+    var reducedNotes = notes.reduce((allNotes: Array<any>, note: INote) => {
       if (allNotes.some((item) => item.time.getTime() === note.time.getTime()))
         return allNotes
 
-      var notesFilteredByDate = notes.filter((item: Notes) => {
+      var notesFilteredByDate = notes.filter((item: INote) => {
         return item.time.getTime() === note.time.getTime()
       })
 
-      var numberOfColums = getNumberOfColums(notesFilteredByDate)
-
       allNotes.push({
         time: note.time,
-        notes: notesFilteredByDate,
-        numberOfColums
+        notes: notesFilteredByDate
       })
 
       return allNotes
@@ -50,30 +46,17 @@ export const ReactWeekNotes = ({ color, notes }: Props) => {
     setAllNotes(reducedNotesSortedByDate)
   }, [])
 
-  function getNumberOfColums(notes: any) {
-    var number = 0
-
-    for (var i = 0; i <= week.length; i++) {
-      var numberOfCols = notes.filter((item: Notes) => item.day === i).length
-
-      if (number < numberOfCols) {
-        number = numberOfCols
-      }
-    }
-
-    return number
-  }
-
   return (
     <div className={styles.container}>
-      <table>
+      <table className={styles.table}>
         <thead>
           <tr>
-            <th>Horários</th>
+            <th className={styles.tabledata}>Horários</th>
             {week.map((day, index) => (
               <th
                 key={index}
                 style={{ backgroundColor: today === index ? color : '#FFF' }}
+                className={styles.tabledata}
               >
                 {day}
               </th>
@@ -81,28 +64,32 @@ export const ReactWeekNotes = ({ color, notes }: Props) => {
           </tr>
         </thead>
         <tbody>
-          {allNotes.map((item: ReducedNote, index: number) => {
+          {allNotes.map((item: IReducedNote, index: number) => {
             return (
               <tr key={index}>
-                <td rowSpan={item.numberOfColums}>{`${item.time.getHours()}:${
+                <td className={styles.tabledata}>{`${item.time.getHours()}:${
                   (item.time.getMinutes() < 10 ? '0' : '') +
                   item.time.getMinutes()
                 }`}</td>
                 {week.map((_, dayIndex: number) => {
-                  var numberOfNotesPerDay = item.notes.filter(
-                    (note: Notes) => note.day === dayIndex
+                  var notesPerDay = item.notes.filter(
+                    (note: INote) => note.day === dayIndex
                   )
 
-                  if (numberOfNotesPerDay.length === 1) {
-                    return <td key={dayIndex}>{numberOfNotesPerDay[0].name}</td>
-                  } else if (numberOfNotesPerDay.length >= 2) {
+                  if (notesPerDay.length === 1) {
                     return (
-                      <td key={dayIndex}>
+                      <td className={styles.tabledata} key={dayIndex}>
+                        {notesPerDay[0].name}
+                      </td>
+                    )
+                  } else if (notesPerDay.length >= 2) {
+                    return (
+                      <td className={styles.tabledata} key={dayIndex}>
                         <table>
                           <tbody>
-                            {numberOfNotesPerDay.map((z: any, i: any) => (
-                              <tr key={i}>
-                                <td>{z.name}</td>
+                            {notesPerDay.map((note: INote, index: number) => (
+                              <tr key={index}>
+                                <td>{note.name}</td>
                               </tr>
                             ))}
                           </tbody>
@@ -110,7 +97,11 @@ export const ReactWeekNotes = ({ color, notes }: Props) => {
                       </td>
                     )
                   } else {
-                    return <td key={dayIndex}>{null}</td>
+                    return (
+                      <td className={styles.tabledata} key={dayIndex}>
+                        {null}
+                      </td>
+                    )
                   }
                 })}
               </tr>
