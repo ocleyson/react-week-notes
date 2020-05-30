@@ -13,15 +13,17 @@ npm install --save react-week-notes
 ## Usage
 
 ```tsx
-import React, { Component } from 'react'
+import React from 'react'
 
-import MyComponent from 'react-week-notes'
+import { ReactWeekNotes } from 'react-week-notes'
 import 'react-week-notes/dist/index.css'
 
-class Example extends Component {
-  render() {
-    return <MyComponent />
-  }
+const notes = [
+    {name: 'Homework', time: new Date(), day: 1}, 
+]
+
+const Example = () => {
+    return <ReactWeekNotes notes={notes} color="#6baade" />
 }
 ```
 
