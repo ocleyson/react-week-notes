@@ -1,7 +1,7 @@
-import { ExampleComponent } from '.'
+import { ReactWeekNotes } from '.'
 
-describe('ExampleComponent', () => {
+describe('ReactWeekNotes', () => {
   it('is truthy', () => {
-    expect(ExampleComponent).toBeTruthy()
+    expect(ReactWeekNotes).toBeTruthy()
   })
 })
