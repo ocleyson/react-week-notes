@@ -4,7 +4,7 @@ import { ReactWeekNotes } from 'react-week-notes'
 import 'react-week-notes/dist/index.css'
 
 const notes = [
-    {name: 'Homework', time: new Date(), day: 1}, 
+    {name: 'Homework', time: '10:30', day: 1}, 
 ]
 
 const App = () => {

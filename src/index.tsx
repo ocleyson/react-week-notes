@@ -3,7 +3,7 @@ import styles from './styles.css'
 
 interface INote {
   name: string
-  time: Date
+  time: string
   day: number
 }
 
@@ -13,7 +13,7 @@ interface IProps {
 }
 
 interface IReducedNote {
-  time: Date
+  time: string
   notes: INote[]
 }
 
@@ -26,11 +26,10 @@ export const ReactWeekNotes = ({ color, notes }: IProps) => {
 
   useEffect(() => {
     var reducedNotes = notes.reduce((allNotes: Array<any>, note: INote) => {
-      if (allNotes.some((item) => item.time.getTime() === note.time.getTime()))
-        return allNotes
+      if (allNotes.some((item) => item.time === note.time)) return allNotes
 
       var notesFilteredByDate = notes.filter((item: INote) => {
-        return item.time.getTime() === note.time.getTime()
+        return item.time === note.time
       })
 
       allNotes.push({
@@ -41,7 +40,11 @@ export const ReactWeekNotes = ({ color, notes }: IProps) => {
       return allNotes
     }, [])
 
-    var reducedNotesSortedByDate = reducedNotes.sort((a, b) => a.time - b.time)
+    var reducedNotesSortedByDate = reducedNotes.sort((a, b) => {
+      if (a.time < b.time) return -1
+      if (a.time > b.time) return 1
+      return 0
+    })
 
     setAllNotes(reducedNotesSortedByDate)
   }, [])
@@ -67,10 +70,7 @@ export const ReactWeekNotes = ({ color, notes }: IProps) => {
           {allNotes.map((item: IReducedNote, index: number) => {
             return (
               <tr key={index}>
-                <td className={styles.tabledata}>{`${item.time.getHours()}:${
-                  (item.time.getMinutes() < 10 ? '0' : '') +
-                  item.time.getMinutes()
-                }`}</td>
+                <td className={styles.tabledata}>{item.time}</td>
                 {week.map((_, dayIndex: number) => {
                   var notesPerDay = item.notes.filter(
                     (note: INote) => note.day === dayIndex
