@@ -25,6 +25,24 @@ export const ReactWeekNotes = ({ color, notes }: IProps) => {
   const [allNotes, setAllNotes] = useState<IReducedNote[]>([])
 
   useEffect(() => {
+    handleErrors()
+    handleData()
+  }, [])
+
+  function handleErrors() {
+    if (notes.some((note) => note.day < 0 || note.day > 6))
+      throw new Error('Days are bad formatted.')
+
+    if (notes.some((note) => typeof note.name !== 'string'))
+      throw new Error('Note name have to be a string.')
+
+    if (
+      notes.some((note) => !/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(note.time))
+    )
+      throw new Error('Time is bad formatted.')
+  }
+
+  function handleData() {
     var reducedNotes = notes.reduce((allNotes: Array<any>, note: INote) => {
       if (allNotes.some((item) => item.time === note.time)) return allNotes
 
@@ -47,7 +65,7 @@ export const ReactWeekNotes = ({ color, notes }: IProps) => {
     })
 
     setAllNotes(reducedNotesSortedByDate)
-  }, [])
+  }
 
   return (
     <div className={styles.container}>
